@@ -22,7 +22,7 @@ app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);
 app.use('/guest', guestRoutes);
 
-// Connect to MongoDB
+// Connect to MongoDB 
 const mongoURI = process.env.MONGO_URI;
 
 if (!mongoURI) {
