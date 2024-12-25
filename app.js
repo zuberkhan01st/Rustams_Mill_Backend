@@ -30,7 +30,7 @@ if (!mongoURI) {
     process.exit(1);  // Exit process if Mongo URI is missing
 }
 
-mongoose.connect(mongoURI, {
+mongoose.connect("mongodb+srv://zuberkhan01st:O68sZKE7tCJskMkp@cluster0.joyco.mongodb.net/Rustams_Floor_Mill?retryWrites=true&w=majority&appName=Cluster0", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
