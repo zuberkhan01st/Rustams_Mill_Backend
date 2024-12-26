@@ -5,8 +5,10 @@ const userRoutes = require('./routes/userRoutes');
 const guestRoutes = require('./routes/guestRoutes');
 const cors = require('cors');  // CORS middleware
 require('dotenv').config();
-
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API);
 const app = express();
+const model = genAI.getGenerativeModel({model:'gemini-pro'});
 
 // Middleware (Parsing input data to JSON)
 app.use(express.json());  // Express built-in JSON parser
@@ -16,6 +18,24 @@ app.use(cors());  // Enable Cross-Origin Requests
 app.get('/', (req, res) => {
     res.json({ message: "Server is working!" });
 });
+
+
+//Gemini Code
+app.post('/chatbot', async (req,res)=>{
+    try {
+        const message = req.body.message;
+        const result = await model.generateContent(message);
+        const response = await result.response;
+        const text = response.text();
+        res.status(200).json({ text: text });
+    
+      } catch (error) {
+          console.error("Error generating text: ", error);
+          throw error; // Re-throw the error to be handled by the caller
+      }
+    
+})
+
 
 // Routes
 app.use('/user', userRoutes);
