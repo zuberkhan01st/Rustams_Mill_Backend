@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const adminRoutes = require('./routes/adminRoutes');
 const userRoutes = require('./routes/userRoutes');
 const guestRoutes = require('./routes/guestRoutes');
+const chatbotRoutes = require('./routes/chatbotRoutes');
 const cors = require('cors');  // CORS middleware
 require('dotenv').config();
-
 const app = express();
 
 // Middleware (Parsing input data to JSON)
@@ -17,10 +17,31 @@ app.get('/', (req, res) => {
     res.json({ message: "Server is working!" });
 });
 
+
+
+//Gemini Code
+/*
+app.post('/chatbot', async (req,res)=>{
+    try {
+        const message = req.body.message;
+        const result = await model.generateContent(message);
+        const response = await result.response;
+        const text = response.text();
+        res.status(200).json({ text: text });
+    
+      } catch (error) {
+          console.error("Error generating text: ", error);
+          throw error; // Re-throw the error to be handled by the caller
+      }
+    
+})
+*/
+
 // Routes
 app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);
 app.use('/guest', guestRoutes);
+app.use('/chatbot',chatbotRoutes);
 
 // Connect to MongoDB 
 const mongoURI = process.env.MONGO_URI;
