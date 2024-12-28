@@ -3,12 +3,10 @@ const mongoose = require('mongoose');
 const adminRoutes = require('./routes/adminRoutes');
 const userRoutes = require('./routes/userRoutes');
 const guestRoutes = require('./routes/guestRoutes');
+const chatbotRoutes = require('./routes/chatbotRoutes');
 const cors = require('cors');  // CORS middleware
 require('dotenv').config();
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API);
 const app = express();
-const model = genAI.getGenerativeModel({model:'gemini-pro'});
 
 // Middleware (Parsing input data to JSON)
 app.use(express.json());  // Express built-in JSON parser
@@ -20,7 +18,9 @@ app.get('/', (req, res) => {
 });
 
 
+
 //Gemini Code
+/*
 app.post('/chatbot', async (req,res)=>{
     try {
         const message = req.body.message;
@@ -35,12 +35,13 @@ app.post('/chatbot', async (req,res)=>{
       }
     
 })
-
+*/
 
 // Routes
 app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);
 app.use('/guest', guestRoutes);
+app.use('/chatbot',chatbotRoutes);
 
 // Connect to MongoDB 
 const mongoURI = process.env.MONGO_URI;
