@@ -1,6 +1,7 @@
 const express = require('express');
 const Product = require('../models/Product');
 const Booking = require('../models/Booking');
+const sendEmail = require('../services/emailService');
 const router = express.Router();
 
 // Route to book a service for guest users
@@ -23,8 +24,45 @@ router.post('/book', async (req, res) => {
             item,
         });
 
+        const adminMail= "ji.7768977983@gmail.com";
         // Save the new booking to the database
         await newBooking.save();
+
+        const subject = "Rustam's Mill (Booking)";
+        const text = `
+        New Booking Notification
+
+        Dear Admin,
+        A new booking has been made. Here are the details:
+
+        - Name: ${newBooking.name}
+        - Phone: ${newBooking.phone}
+        - Address: ${newBooking.address}
+        - Item: ${newBooking.item}
+        - Created At (Date): ${newBooking.createdAt.toLocaleString()}
+
+        Please log in to your admin panel for further details.
+        `;
+
+        const html = `
+            <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                <h2 style="color: #4CAF50;">📢 New Booking Notification</h2>
+                <p>Dear Admin,</p>
+                <p>A new booking has been made. Here are the details:</p>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li><strong>Name:</strong> ${newBooking.name}</li>
+                    <li><strong>Phone:</strong> ${newBooking.phone}</li>
+                    <li><strong>Address:</strong> ${newBooking.address}</li>
+                    <li><strong>Item:</strong> ${newBooking.item}</li>
+                    <li><strong>Created At (Date):</strong> ${newBooking.createdAt.toLocaleString()}</li>
+                </ul>
+                <p style="color: #555;">Please log in to your admin panel for further details.</p>
+            </div>
+        `;
+
+
+        await sendEmail(adminMail, subject, text, html);
+
 
         // Respond with success message
         res.json({ message: 'Booking successfully made', booking: newBooking });
@@ -50,5 +88,50 @@ router.get('/bookings',async (req,res)=>{
 
     }
 );
+
+router.post('/contactus',async (req,res)=>{
+    const { name, email, message} = req.body;
+
+    try{
+    const adminMail= "ji.7768977983@gmail.com";
+
+        const subject = "Rustam's Mill (Contact Us / Enquiry)";
+        const text = `
+        New Contact US/ Enquiry 
+
+        Dear Admin,
+        A new booking has been made. Here are the details:
+
+        - Name: ${name}
+        - EmailAddress: ${email}
+        - Message: ${message}
+        `;
+
+        const html = `
+            <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                <h2 style="color: #4CAF50;">📢 New Booking Notification</h2>
+                <p>Dear Admin,</p>
+                <p>A new booking has been made. Here are the details:</p>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li><strong>Name:</strong> ${name}</li>
+                    <li><strong>Phone:</strong> ${email}</li>
+                    <li><strong>Address:</strong> ${message}</li>
+                    <br>
+                </ul>
+                <p style="color: #555;">Please log in to your admin panel for further details.</p>
+            </div>
+        `;
+
+
+        await sendEmail(adminMail, subject, text, html);
+
+
+        // Respond with success message
+        res.json({ message: 'Successfully sent the message'});
+    } catch (error) {
+        // Handle unexpected errors
+        return res.status(500).json({ error: error.message });
+    }
+});
 
 module.exports = router;

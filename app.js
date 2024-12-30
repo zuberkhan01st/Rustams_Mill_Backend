@@ -51,14 +51,11 @@ if (!mongoURI) {
     process.exit(1);  // Exit process if Mongo URI is missing
 }
 
-mongoose.connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connected to MongoDB'))
     .catch((error) => {
         console.error('MongoDB connection error:', error);
-        process.exit(1);  // Exit process if MongoDB connection fails
+        process.exit(1); // Exit if MongoDB connection fails
     });
 
 // Global error handler for any unhandled routes or errors
