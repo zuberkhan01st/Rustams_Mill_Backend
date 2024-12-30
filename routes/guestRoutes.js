@@ -89,4 +89,49 @@ router.get('/bookings',async (req,res)=>{
     }
 );
 
+router.post('/contactus',async (req,res)=>{
+    const { name, email, message} = req.body;
+
+    try{
+    const adminMail= "ji.7768977983@gmail.com";
+
+        const subject = "Rustam's Mill (Contact Us / Enquiry)";
+        const text = `
+        New Contact US/ Enquiry 
+
+        Dear Admin,
+        A new booking has been made. Here are the details:
+
+        - Name: ${name}
+        - EmailAddress: ${email}
+        - Message: ${message}
+        `;
+
+        const html = `
+            <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                <h2 style="color: #4CAF50;">📢 New Booking Notification</h2>
+                <p>Dear Admin,</p>
+                <p>A new booking has been made. Here are the details:</p>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li><strong>Name:</strong> ${name}</li>
+                    <li><strong>Phone:</strong> ${email}</li>
+                    <li><strong>Address:</strong> ${message}</li>
+                    <br>
+                </ul>
+                <p style="color: #555;">Please log in to your admin panel for further details.</p>
+            </div>
+        `;
+
+
+        await sendEmail(adminMail, subject, text, html);
+
+
+        // Respond with success message
+        res.json({ message: 'Successfully sent the message'});
+    } catch (error) {
+        // Handle unexpected errors
+        return res.status(500).json({ error: error.message });
+    }
+});
+
 module.exports = router;
