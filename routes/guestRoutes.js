@@ -3,6 +3,7 @@ const Product = require('../models/Product');
 const Booking = require('../models/Booking');
 const sendEmail = require('../services/emailService');
 const router = express.Router();
+require('dotenv').config;
 
 // Route to book a service for guest users
 router.post('/book', async (req, res) => {
@@ -24,7 +25,7 @@ router.post('/book', async (req, res) => {
             item,
         });
 
-        const adminMail= "ji.7768977983@gmail.com";
+        const adminMail= process.env.ADMIN_EMAIL;
         // Save the new booking to the database
         await newBooking.save();
 
@@ -93,7 +94,7 @@ router.post('/contactus',async (req,res)=>{
     const { name, email, message} = req.body;
 
     try{
-    const adminMail= "ji.7768977983@gmail.com";
+    const adminMail= process.env.ADMIN_EMAIL;
 
         const subject = "Rustam's Mill (Contact Us / Enquiry)";
         const text = `
