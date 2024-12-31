@@ -19,24 +19,6 @@ app.get('/', (req, res) => {
 
 
 
-//Gemini Code
-/*
-app.post('/chatbot', async (req,res)=>{
-    try {
-        const message = req.body.message;
-        const result = await model.generateContent(message);
-        const response = await result.response;
-        const text = response.text();
-        res.status(200).json({ text: text });
-    
-      } catch (error) {
-          console.error("Error generating text: ", error);
-          throw error; // Re-throw the error to be handled by the caller
-      }
-    
-})
-*/
-
 // Routes
 app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);
