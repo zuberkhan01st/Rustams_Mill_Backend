@@ -11,14 +11,6 @@
         "src": "/(.*)",
         "dest": "api/index.js"
       }
-    ],
-    "env": {
-      "MONGO_URI": "@mongo_uri",
-      "GEMINI_API": "@gemini_uri",
-      "EMAIL_USER": "@email_user",
-      "EMAIL_PASS": "@email_pass",
-      "JWT_SECRET": "@jwt_secret",
-      "ADMIN_EMAIL": "@admin_email"
-    }
+    ]
   }
   
