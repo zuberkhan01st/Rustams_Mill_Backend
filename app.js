@@ -14,7 +14,7 @@ app.use(cors());  // Enable Cross-Origin Requests
 
 // Basic route to check if server is working
 app.get('/', (req, res) => {
-    res.json({ message: "Server is working!" });
+    res.json({ message: "Server Is Working!" });
 });
 
 
