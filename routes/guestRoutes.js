@@ -5,6 +5,7 @@ const sendEmail = require('../services/emailService');
 const router = express.Router();
 require('dotenv').config;
 
+
 // Route to book a service for guest users
 router.post('/book', async (req, res) => {
     const { name, phone, address, item } = req.body;
@@ -25,12 +26,13 @@ router.post('/book', async (req, res) => {
             item,
         });
 
-        const adminMail= process.env.ADMIN_EMAIL;
+        const adminMail = process.env.ADMIN_EMAIL;
         // Save the new booking to the database
         await newBooking.save();
 
-        const subject = "Rustam's Mill (Booking)";
-        const text = `
+        const emailfunc = async () => {
+            const subject = "Rustam's Mill (Booking)";
+            const text = `
         New Booking Notification
 
         Dear Admin,
@@ -45,7 +47,7 @@ router.post('/book', async (req, res) => {
         Please log in to your admin panel for further details.
         `;
 
-        const html = `
+            const html = `
             <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
                 <h2 style="color: #4CAF50;">📢 New Booking Notification</h2>
                 <p>Dear Admin,</p>
@@ -62,8 +64,10 @@ router.post('/book', async (req, res) => {
         `;
 
 
-        await sendEmail(adminMail, subject, text, html);
+            await sendEmail(adminMail, subject, text, html);
+        }
 
+        emailfunc();
 
         // Respond with success message
         res.json({ message: 'Booking successfully made', booking: newBooking });
@@ -73,30 +77,31 @@ router.post('/book', async (req, res) => {
     }
 });
 
-router.get('/bookings',async (req,res)=>{
-    try{
-        const bookings = await Booking.find().sort({createdAt:-1});
+router.get('/bookings', async (req, res) => {
+    try {
+        const bookings = await Booking.find().sort({ createdAt: -1 });
 
-        if(bookings.length === 0){
-            return res.status(401).json({message:'No bookings found'});
+        if (bookings.length === 0) {
+            return res.status(401).json({ message: 'No bookings found' });
         }
 
         res.json(bookings);
     }
-    catch(error){
-        res.status(500).json({message: error.message});
+    catch (error) {
+        res.status(500).json({ message: error.message });
     }
 
-    }
+}
 );
 
-router.post('/contactus',async (req,res)=>{
-    const { name, email, message} = req.body;
+router.post('/contactus', async (req, res) => {
+    const { name, email, message } = req.body;
 
-    try{
-    const adminMail= process.env.ADMIN_EMAIL;
+    try {
+        const adminMail = process.env.ADMIN_EMAIL;
 
-        const subject = "Rustam's Mill (Contact Us / Enquiry)";
+        const emailfunct2 =  async () =>{
+            const subject = "Rustam's Mill (Contact Us / Enquiry)";
         const text = `
         New Contact US/ Enquiry 
 
@@ -125,10 +130,14 @@ router.post('/contactus',async (req,res)=>{
 
 
         await sendEmail(adminMail, subject, text, html);
+        }
+
+        emailfunct2();
+        
 
 
         // Respond with success message
-        res.json({ message: 'Successfully sent the message'});
+        res.json({ message: 'Successfully sent the message' });
     } catch (error) {
         // Handle unexpected errors
         return res.status(500).json({ error: error.message });
