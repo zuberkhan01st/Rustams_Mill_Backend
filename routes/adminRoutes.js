@@ -6,6 +6,7 @@ const Booking = require('../models/Booking');
 const Admin = require('../models/admin')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const authenticate = require('../middleware/authenticateAdmin');
 
 router.post('/login',async (req, res) => {
     console.log("Login Request!")
@@ -62,7 +63,7 @@ router.post('/signup', async (req, res) => {
 });
 
 
-router.post('/add_product',async (req,res)=>{
+router.post('/add_product',authenticate, async (req,res)=>{
     const { name, description, pricePerKg} = req.body;
 
     // Validate the input fields
@@ -91,7 +92,7 @@ router.post('/add_product',async (req,res)=>{
     }
 });
 
-router.get('/bookings', async (req, res) => {
+router.get('/bookings',authenticate, async (req, res) => {
     try {
         const bookings = await Booking.find().sort({ createdAt: -1 });
 
