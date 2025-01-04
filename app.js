@@ -18,7 +18,6 @@ app.get('/', (req, res) => {
 });
 
 
-
 // Routes
 app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);
