@@ -7,6 +7,10 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const authenticate = require('../middleware/authenticateAdmin');
+const emailService = require('../services/emailService');
+const crypto = require('crypto');
+
+const otpStore = new Map();
 
 router.post('/login',async (req,res)=>{
     try{
@@ -105,14 +109,14 @@ router.get('/bookings',authenticate, async (req, res) => {
 
 // Get Bookings for a Particular User
 router.get('/bookings/user',authenticate, async (req, res) => {
-    const { name } = req.query; // Fetching 'name' from query params
+    const { username } = req.query; // Fetching 'name' from query params
 
-    if (!name) {
+    if (!username) {
         return res.status(400).json({ message: 'Name parameter is required' });
     }
 
     try {
-        const bookings = await Booking.find({ name }).sort({ createdAt: -1 });
+        const bookings = await Booking.find({ username }).sort({ createdAt: -1 });
 
         if (bookings.length === 0) {
             return res.status(404).json({ message: `No bookings found for user: ${name}` });
@@ -123,6 +127,130 @@ router.get('/bookings/user',authenticate, async (req, res) => {
     } catch (error) {
         // Catch and send errors if there are any
         res.status(500).json({ message: error.message });
+    }
+});
+
+router.post('/request-otp', async (req, res) => {
+    const { username } = req.body;
+
+    if (!username) {
+        return res.status(400).json({ message: "Username is required." });
+    }
+
+    try {
+        // Check if the username exists in the database
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: "The username doesn't exist." });
+        }
+
+        // Generate a 6-digit OTP
+        const otp = crypto.randomInt(100000, 999999).toString();
+
+        // Store the OTP temporarily with a timeout
+        otpStore.set(username, otp);
+        setTimeout(() => otpStore.delete(username), 5 * 60 * 1000); // OTP expires in 5 minutes
+
+        // Send the OTP via email
+
+        const sendEmail = async()=>{
+
+       
+            const subject = "Rustam's Mill - OTP for Password Change";
+            const text = `
+            Hello ${user.username},
+
+            Use the following OTP to change your password: ${otp}
+            This OTP is valid for 5 minutes.
+
+            Regards,
+            Rustam's Mill Support Team
+            `;
+
+            const html = `
+            <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                <h2 style="color: #4CAF50;">🔑 Your OTP for Password Change</h2>
+                <p>Hello <strong>${user.username}</strong>,</p>
+                <p>Use the following OTP to change your password:</p>
+                <h1 style="color: #333; text-align: center;">${otp}</h1>
+                <p>This OTP is valid for <strong>5 minutes</strong>.</p>
+                <p>Regards,<br>Rustam's Mill Support Team</p>
+            </div>
+            `;
+
+            await emailService(user.email, subject, text, html);
+        }
+        sendEmail();
+        console.log(otp);
+        res.status(200).json({ message: "OTP sent to your registered email." });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Internal server error. Please try again later." });
+    }
+});
+
+router.patch('/changepass', async (req,res)=>{
+    const {username, newPassword, otp} = req.body;
+
+    if(!otp || !username || !newPassword){
+        return res.status(400).json({message: "Enter details properly"});
+    }
+
+    try{
+        const storedOtp = otpStore.get(username);
+
+        if (!storedOtp || storedOtp !== otp) {
+            return res.status(400).json({ message: "Invalid or expired OTP." });
+        }
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: "The username doesn't exist." });
+        }
+
+        // Hash the new password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        // Update the password in the database
+        user.password = hashedPassword;
+        await user.save();
+
+        // Remove OTP from storage
+        otpStore.delete(username);
+
+        // Notify the user
+
+        const sendEmail = async () =>{
+
+        
+            const subject = "Password Changed Successfully";
+            const text = `
+            Hello ${user.username},
+
+            Your password has been successfully updated. If you did not request this change, please contact support immediately.
+
+            Regards,
+            Rustam's Mill Support Team
+            `;
+
+            const html = `
+            <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                <h2 style="color: #4CAF50;">🔒 Password Changed Successfully</h2>
+                <p>Hello <strong>${user.username}</strong>,</p>
+                <p>Your password has been successfully updated.</p>
+                <p>If you did not request this change, please contact support immediately.</p>
+                <p>Regards,<br>Rustam's Mill Support Team</p>
+            </div>
+            `;
+
+            await emailService(user.email, subject, text, html);
+        }
+
+        sendEmail();
+        res.status(200).json({ message: "Password changed successfully and notification email sent." });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Internal server error. Please try again later." });
     }
 });
 
