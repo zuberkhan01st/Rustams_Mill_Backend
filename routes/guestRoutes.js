@@ -2,11 +2,12 @@ const express = require('express');
 const Product = require('../models/Product');
 const Booking = require('../models/Booking');
 const sendEmail = require('../services/emailService');
+const { upload, uploadImage } = require('../controller/uploadController'); // Import controller
 const router = express.Router();
-require('dotenv').config;
 
+// POST route for uploading an image to Cloudinary
+router.post('/upload', upload.single('image'), uploadImage);
 
-// Route to book a service for guest users
 router.post('/book', async (req, res) => {
     const { name, phone, address, item } = req.body;
 
@@ -16,8 +17,6 @@ router.post('/book', async (req, res) => {
     }
 
     try {
-        // Check if the item exists in the Product collection
-
         // Create a new booking object
         const newBooking = new Booking({
             name,
@@ -27,25 +26,26 @@ router.post('/book', async (req, res) => {
         });
 
         const adminMail = process.env.ADMIN_EMAIL;
+
         // Save the new booking to the database
         await newBooking.save();
 
         const emailfunc = async () => {
             const subject = "Rustam's Mill (Booking)";
             const text = `
-        New Booking Notification
+            New Booking Notification
 
-        Dear Admin,
-        A new booking has been made. Here are the details:
+            Dear Admin,
+            A new booking has been made. Here are the details:
 
-        - Name: ${newBooking.name}
-        - Phone: ${newBooking.phone}
-        - Address: ${newBooking.address}
-        - Item: ${newBooking.item}
-        - Created At (Date): ${newBooking.createdAt.toLocaleString()}
+            - Name: ${newBooking.name}
+            - Phone: ${newBooking.phone}
+            - Address: ${newBooking.address}
+            - Item: ${newBooking.item}
+            - Created At (Date): ${newBooking.createdAt.toLocaleString()}
 
-        Please log in to your admin panel for further details.
-        `;
+            Please log in to your admin panel for further details.
+            `;
 
             const html = `
             <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
@@ -61,8 +61,7 @@ router.post('/book', async (req, res) => {
                 </ul>
                 <p style="color: #555;">Please log in to your admin panel for further details.</p>
             </div>
-        `;
-
+            `;
 
             await sendEmail(adminMail, subject, text, html);
         }
@@ -90,9 +89,7 @@ router.get('/bookings', async (req, res) => {
     catch (error) {
         res.status(500).json({ message: error.message });
     }
-
-}
-);
+});
 
 router.post('/contactus', async (req, res) => {
     const { name, email, message } = req.body;
@@ -100,41 +97,37 @@ router.post('/contactus', async (req, res) => {
     try {
         const adminMail = process.env.ADMIN_EMAIL;
 
-        const emailfunct2 =  async () =>{
+        const emailfunc2 = async () => {
             const subject = "Rustam's Mill (Contact Us / Enquiry)";
-        const text = `
-        New Contact US/ Enquiry 
+            const text = `
+            New Contact US/ Enquiry
 
-        Dear Admin,
-        A new booking has been made. Here are the details:
+            Dear Admin,
+            A new contact us message has been received. Here are the details:
 
-        - Name: ${name}
-        - EmailAddress: ${email}
-        - Message: ${message}
-        `;
+            - Name: ${name}
+            - Email: ${email}
+            - Message: ${message}
+            `;
 
-        const html = `
+            const html = `
             <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-                <h2 style="color: #4CAF50;">📢 New Booking Notification</h2>
+                <h2 style="color: #4CAF50;">📢 New Contact Us/ Enquiry Notification</h2>
                 <p>Dear Admin,</p>
-                <p>A new booking has been made. Here are the details:</p>
+                <p>A new contact us message has been received. Here are the details:</p>
                 <ul style="list-style-type: none; padding: 0;">
                     <li><strong>Name:</strong> ${name}</li>
-                    <li><strong>Phone:</strong> ${email}</li>
-                    <li><strong>Address:</strong> ${message}</li>
-                    <br>
+                    <li><strong>Email:</strong> ${email}</li>
+                    <li><strong>Message:</strong> ${message}</li>
                 </ul>
                 <p style="color: #555;">Please log in to your admin panel for further details.</p>
             </div>
-        `;
+            `;
 
-
-        await sendEmail(adminMail, subject, text, html);
+            await sendEmail(adminMail, subject, text, html);
         }
 
-        emailfunct2();
-        
-
+        emailfunc2();
 
         // Respond with success message
         res.json({ message: 'Successfully sent the message' });
