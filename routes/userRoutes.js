@@ -1,5 +1,4 @@
 const express = require('express');
-//const { register, bookService, login } = require('../controller/userController');
 const router = express.Router();
 const Booking = require('../models/Booking');
 const Product = require('../models/Product');

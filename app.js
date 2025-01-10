@@ -17,7 +17,6 @@ app.get('/', (req, res) => {
     res.json({ message: "Server Is Working!" });
 });
 
-
 // Routes
 app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);
