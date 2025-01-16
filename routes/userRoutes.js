@@ -8,8 +8,11 @@ const bcrypt = require('bcrypt');
 const authenticate = require('../middleware/authenticateAdmin');
 const emailService = require('../services/emailService');
 const crypto = require('crypto');
+const {upload , uploadGrevience} = require('../controller/uploadController');
 
 const otpStore = new Map();
+
+router.post('/grevience',authenticate, upload.single('image'), uploadGrevience)
 
 router.post('/login',async (req,res)=>{
     try{
@@ -189,6 +192,7 @@ router.post('/request-otp', async (req, res) => {
 });
 
 router.patch('/changepass', async (req,res)=>{
+    console.log("Chnage pass req!");
     const {username, newPassword, otp} = req.body;
 
     if(!otp || !username || !newPassword){

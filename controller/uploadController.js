@@ -1,6 +1,7 @@
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
+const Greviance = require('../models/grievance');
 
 // Cloudinary configuration
 cloudinary.config({
@@ -20,7 +21,6 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage: storage });
 
-// Controller function for image upload
 const uploadImage = async (req, res) => {
     try {
         if (!req.file) {
@@ -39,5 +39,38 @@ const uploadImage = async (req, res) => {
     }
 };
 
+const uploadGrevience = async (req,res)=>{
+    try{
+        const { title, description }= req.body;
+
+        if(!title || !description){
+            return res.status(400).json({ error: 'Greviance Title and description is missing!'})
+        }
+
+        if(!req.file){
+            return res.status(400).json({error: 'No image file uploaded'});
+
+        }
+
+        const imageURL = req.file.path;
+
+
+        const newGrievance = new Greviance({
+            title,
+            description,
+            imageURL
+        });
+
+        await newGrievance.save();
+        res.status(200).json({
+            message: "Greviance successfully raised!", data:{ title, description, imageURL}
+        })
+    }
+    catch(error){
+        console.error('Error Uploading greviance: ',error);
+        res.status(500).json({error: 'Grievance upload failed'});
+    }
+};
+
 // Export the upload middleware and controller
-module.exports = { upload,uploadImage };
+module.exports = { upload ,uploadGrevience};
