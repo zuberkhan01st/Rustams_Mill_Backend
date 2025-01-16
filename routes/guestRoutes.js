@@ -2,11 +2,12 @@ const express = require('express');
 const Product = require('../models/Product');
 const Booking = require('../models/Booking');
 const sendEmail = require('../services/emailService');
-const { upload, uploadImage } = require('../controller/uploadController'); // Import controller
+const { upload, uploadGrevience } = require('../controller/uploadController'); // Import controller
+const authenticate = require('../middleware/authenticateAdmin');
 const router = express.Router();
 
 // POST route for uploading an image to Cloudinary
-router.post('/upload', upload.single('image'), uploadImage);
+router.post('/grevience', upload.single('image'), uploadGrevience);
 
 router.post('/book', async (req, res) => {
     const { name, phone, address, item } = req.body;
