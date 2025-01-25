@@ -3,7 +3,6 @@ const Product = require('../models/Product');
 const Booking = require('../models/Booking');
 const sendEmail = require('../services/emailService');
 const { upload, uploadGrevience } = require('../controller/uploadController'); // Import controller
-const authenticate = require('../middleware/authenticateAdmin');
 const router = express.Router();
 
 // POST route for uploading an image to Cloudinary
