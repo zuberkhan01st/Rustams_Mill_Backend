@@ -7,6 +7,8 @@ const Admin = require('../models/admin')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const authenticate = require('../middleware/authenticateAdmin');
+require('dotenv').config();
+const VISUALIZE_API = process.env.VISUALIZE_API;
 
 router.post('/login',async (req, res) => {
     console.log("Login Request!")
@@ -105,6 +107,15 @@ router.get('/bookings',authenticate, async (req, res) => {
     } catch (error) {
         // Catch and send errors if there are any
         res.status(500).json({ message: error.message });
+    }
+});
+
+router.get('/visualize',authenticate, async =(req,res)=>{
+    try{
+        res.status(200).json({api:VISUALIZE_API});
+    }
+    catch(error){
+        res.status(500).json({ error: "Internal Server Error || Issue with the visualizing api" });
     }
 });
 
