@@ -1,0 +1,97 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.pdb
+*.log
+
+# Virtual environments
+venv/
+ENV/
+env/
+*.env
+*.venv
+.vscode/
+
+# PyCharm
+.idea/
+
+# Flask
+instance/
+.webassets-cache
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# MySQL database dumps (if any)
+*.sql
+*.sqlite3
+
+# Logs
+*.log
+
+# Secrets and sensitive data (ensure you use a .env file for environment variables)
+*.env
+*.env.*
+*.ini
+*.json
+.env
+
+# Faiss Index Files (add any specific faiss-related files you want to ignore)
+faiss_index.idx
+
+# Pickle files
+*.pkl
+*.pkl.*
+
+# Python Wheels
+*.whl
+
+# Distribution / packaging
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+pip-wheel-metadata/
+*.tar.gz
+
+# Coverage reports
+.coverage
+*.coveragerc
+coverage.xml
+*.hypothesis/
+
+# Test-related files
+nosetests.xml
+pytest*
+test_*.py
+tests/
+
+# Configuration for various tools
+*.coverage
+*.tox/
+*.nox/
+*.coverage.*
+*.hypothesis/
+.tox/
+.nox/
+.coverage
+nosetests.xml
+*.coveragerc
+
+# Database-related files
+db.sqlite3
+
+# MacOS generated files
+.DS_Store
+
+# Windows generated files
+Thumbs.db
+
+# Groq AI cache or other cloud provider files (if any)
+.groq_cache/
+
+# Langchain
+langchain_cache/

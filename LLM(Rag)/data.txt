@@ -1,0 +1,180 @@
+{
+  "documents": [
+    {
+      "text": "Rustam's Grinding Mill was established in the early 1990s by Rustam Khan, continuing a family tradition of grain milling that predates the British era",
+      "type": "history",
+      "category": "mill_info",
+      "established": "1990s",
+      "founder": "Rustam Khan",
+      "heritage": "pre-British"
+    },
+    {
+      "text": "Rustam's Mill offers grinding services for Wheat, Jawari, Rice, Besan, and Wet Rice, using traditional stone grinding methods for authentic flavor",
+      "type": "service_summary",
+      "category": "offerings",
+      "services": ["Wheat", "Jawari", "Rice", "Besan", "Wet Rice"],
+      "method": "stone grinding"
+    },
+    {
+      "text": "Wheat grinding: Rs 40 per 10kg, minimum 10kg order, same-day service if ordered before 12PM",
+      "type": "service",
+      "category": "wheat",
+      "price": 40,
+      "unit": "10kg",
+      "minimum": 10,
+      "turnaround": "same-day",
+      "cutoff_time": "12:00"
+    },
+    {
+      "text": "Jawari grinding: Rs 40 per 10kg, minimum 5kg order, same-day service if ordered before 12PM",
+      "type": "service",
+      "category": "jawari",
+      "price": 40,
+      "unit": "10kg",
+      "minimum": 5,
+      "turnaround": "same-day",
+      "cutoff_time": "12:00"
+    },
+    {
+      "text": "Rice grinding: Rs 50 per 10kg, minimum 5kg, 24-hour turnaround",
+      "type": "service",
+      "category": "rice",
+      "price": 50,
+      "unit": "10kg",
+      "minimum": 5,
+      "turnaround": "24 hours"
+    },
+    {
+      "text": "Besan (Chana) grinding: Rs 50 per kg, minimum 2kg, 48-hour processing due to special cleaning",
+      "type": "service",
+      "category": "besan",
+      "price": 50,
+      "unit": "kg",
+      "minimum": 2,
+      "turnaround": "48 hours",
+      "reason": "special cleaning"
+    },
+    {
+      "text": "Wet Rice grinding: Rs 100 per 10kg, available only on Tuesdays and Fridays, requires special equipment",
+      "type": "service",
+      "category": "wet_rice",
+      "price": 100,
+      "unit": "10kg",
+      "available_days": ["Tuesday", "Friday"],
+      "note": "special equipment"
+    },
+    {
+      "text": "Price List: Wheat (Rs 40/10kg), Jawari (Rs 40/10kg), Rice (Rs 50/10kg), Besan (Rs 50/kg), Wet Rice (Rs 100/10kg)",
+      "type": "price_summary",
+      "categories": [
+        {"name": "Wheat", "price": 40, "unit": "10kg"},
+        {"name": "Jawari", "price": 40, "unit": "10kg"},
+        {"name": "Rice", "price": 50, "unit": "10kg"},
+        {"name": "Besan", "price": 50, "unit": "kg"},
+        {"name": "Wet Rice", "price": 100, "unit": "10kg"}
+      ]
+    },
+    {
+      "text": "Mill operating hours: 8:00 AM to 8:00 PM, Monday through Sunday, except first Monday of each month for maintenance",
+      "type": "operation",
+      "category": "timing",
+      "opens": "08:00",
+      "closes": "20:00",
+      "days": "Monday-Sunday",
+      "maintenance": "first Monday"
+    },
+    {
+      "text": "Free pickup and delivery for orders above 50kg within Pune city limits",
+      "type": "service",
+      "category": "delivery",
+      "threshold": 50,
+      "unit": "kg",
+      "area": "Pune"
+    },
+    {
+      "text": "Payment methods: Cash, UPI, and credit/debit cards. Checks not accepted.",
+      "type": "policy",
+      "category": "payment",
+      "methods": ["cash", "UPI", "card"],
+      "not_accepted": "checks"
+    },
+    {
+      "text": "Quality guarantee: Free regrinding if not satisfied with the quality of the grind",
+      "type": "policy",
+      "category": "quality",
+      "guarantee": "free regrinding"
+    },
+    {
+      "text": "Bulk orders above 100kg qualify for special pricing, contact mill directly",
+      "type": "service",
+      "category": "bulk",
+      "threshold": 100,
+      "unit": "kg",
+      "contact_required": true
+    },
+    {
+      "text": "Customer facilities: Parking for 2-wheelers behind the mill, waiting area with seating",
+      "type": "facility",
+      "category": "customer",
+      "parking": "2-wheeler",
+      "waiting_area": true
+    },
+    {
+      "text": "Booking #1001 - 20kg Wheat grinding for Ramesh Patel (9823456710) from Kothrud, Pune on 2023-11-15",
+      "type": "booking",
+      "customer": "Ramesh Patel",
+      "phone": "9823456710",
+      "address": "Kothrud, Pune",
+      "item": "Wheat",
+      "quantity": 20,
+      "unit": "kg",
+      "date": "2023-11-15",
+      "total_price": 80
+    },
+    {
+      "text": "Booking #1002 - 15kg Rice grinding for Priya Sharma (8765432190) from Wakad, Pune on 2023-11-16",
+      "type": "booking",
+      "customer": "Priya Sharma",
+      "phone": "8765432190",
+      "address": "Wakad, Pune",
+      "item": "Rice",
+      "quantity": 15,
+      "unit": "kg",
+      "date": "2023-11-16",
+      "total_price": 75
+    },
+    {
+      "text": "Booking #1003 - 8kg Besan grinding for Amit Joshi (7654321890) from Baner, Pune on 2023-11-17",
+      "type": "booking",
+      "customer": "Amit Joshi",
+      "phone": "7654321890",
+      "address": "Baner, Pune",
+      "item": "Besan",
+      "quantity": 8,
+      "unit": "kg",
+      "date": "2023-11-17",
+      "total_price": 400
+    },
+    {
+      "text": "Special offer: 10% discount on all services for orders placed before Diwali (November 10, 2023)",
+      "type": "promotion",
+      "category": "offer",
+      "discount": 10,
+      "valid_until": "2023-11-10",
+      "occasion": "Diwali"
+    },
+    {
+      "text": "Rustam's Mill uses eco-friendly practices, including solar power for some operations",
+      "type": "information",
+      "category": "sustainability",
+      "practices": ["solar power"]
+    },
+    {
+      "text": "Contact Rustam's Mill via phone (9921673793) or email (contact@rustamsmill.com) for inquiries",
+      "type": "contact",
+      "category": "support",
+      "phone": "9921673793",
+      "email": "contact@rustamsmill.com"
+    }
+  ]
+}
