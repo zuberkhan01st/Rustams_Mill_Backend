@@ -3,7 +3,6 @@ from rag_app import load_knowledge_base, answer_query
 
 app = Flask(__name__)
 
-load_knowledge_base()
 
 @app.route('/',methods=['POST','GET'])
 def main():
