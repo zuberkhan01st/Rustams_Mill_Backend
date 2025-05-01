@@ -4,6 +4,7 @@ const Booking = require('../models/Booking');
 const sendEmail = require('../services/emailService');
 const { upload, uploadGrevience } = require('../controller/uploadController'); // Import controller
 const router = express.Router();
+const sendBrevoMail = require('../services/brevo');
 
 // POST route for uploading an image to Cloudinary
 router.post('/grevience', upload.single('image'), uploadGrevience);
